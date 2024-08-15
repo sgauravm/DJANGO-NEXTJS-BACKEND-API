@@ -5,3 +5,5 @@ rav
 django-ninja-jwt[crypto]
 pydantic[email]
 python-decouple # For laoding environment variable
+dj-database-url
+psycopg[binary]
