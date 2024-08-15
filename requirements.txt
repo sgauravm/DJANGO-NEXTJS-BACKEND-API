@@ -1,0 +1,7 @@
+Django
+django-cors-headers
+django-ninja
+rav
+django-ninja-jwt[crypto]
+pydantic[email]
+python-decouple # For laoding environment variable
