@@ -28,6 +28,10 @@ SECRET_KEY = config("DJANGO_SECRET_KEY", cast=str)
 DEBUG = config("DJANGO_DEBUG", cast=bool, default=False)
 
 ALLOWED_HOSTS = [".railway.app"]
+
+if DEBUG:
+    ALLOWED_HOSTS = ["*"]
+
 CSRF_TRUSTED_ORIGINS = ["http://*.railway.app", "https://*.railway.app"]
 
 # Application definition
@@ -99,9 +103,9 @@ DATABASES = {
     }
 }
 
-DATABASE_URL = config("DATABASE_URL", cast=str, default=None)
+DATABASE_URL = config("DATABASE_URL", cast=str, default="")
 
-if DATABASE_URL is not None:
+if DATABASE_URL != "":
     import dj_database_url
 
     DATABASES = {

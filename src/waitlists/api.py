@@ -5,6 +5,7 @@ from .schemas import (
     WaitlistEntryListSchema,
     WaitlistEntryDetailSchema,
     WaitlistEntryCreateSchema,
+    WaitlistEntryUpdateSchema,
 )
 from typing import List
 from django.shortcuts import get_object_or_404
@@ -35,7 +36,7 @@ def list_waitlist_entries(request):
     response=WaitlistEntryDetailSchema,
     auth=helpers.api_auth_user_required,
 )
-def list_waitlist_entries(request, entry_id: int):
+def get_waitlist_entries(request, entry_id: int):
     obj = get_object_or_404(WaitlistEntry, id=entry_id, user=request.user)
     return obj
 
@@ -60,3 +61,27 @@ def create_waitlist_entry(request, data: WaitlistEntryCreateSchema):
         obj.user = request.user
     obj.save()
     return 201, obj
+
+
+@router.put(
+    "{entry_id}/",
+    response=WaitlistEntryDetailSchema,
+    auth=helpers.api_auth_user_required,
+)
+def update_waitlist_entries(request, entry_id: int, payload: WaitlistEntryUpdateSchema):
+    obj = get_object_or_404(WaitlistEntry, id=entry_id, user=request.user)
+    for k, v in payload.dict().items():
+        setattr(obj, k, v)
+    obj.save()
+    return obj
+
+
+@router.delete(
+    "{entry_id}/delete",
+    response=WaitlistEntryDetailSchema,
+    auth=helpers.api_auth_user_required,
+)
+def delete_waitlist_entries(request, entry_id: int):
+    obj = get_object_or_404(WaitlistEntry, id=entry_id, user=request.user)
+    obj.delete()
+    return obj
